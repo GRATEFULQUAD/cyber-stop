@@ -50,22 +50,24 @@ export function ParticleField({ colors, count }: ParticleFieldProps) {
 
       const rand = mulberry32(seedRef.current);
 
+      // Mostly crisp small dots (starfield look), with a light sprinkle of
+      // tiny rings/streaks and only a rare, small, subtle glow blob.
       for (let i = 0; i < count; i++) {
         const roll = rand();
         let kind: ShapeKind = "dot";
-        if (roll > 0.97) kind = "streak";
-        else if (roll > 0.9) kind = "blob";
-        else if (roll > 0.85) kind = "ring";
+        if (roll > 0.99) kind = "blob";
+        else if (roll > 0.975) kind = "streak";
+        else if (roll > 0.94) kind = "ring";
 
         const color = colors[Math.floor(rand() * colors.length)];
         const x = rand() * w;
         const y = rand() * h;
-        const alpha = rand() * 0.55 + 0.15;
+        const alpha = rand() * 0.5 + 0.25;
 
         ctx.save();
         if (kind === "dot") {
-          const size = rand() * 1.6 + 0.3;
-          const glow = rand() > 0.9 ? rand() * 8 + 4 : 0;
+          const size = rand() * 1.4 + 0.4;
+          const glow = rand() > 0.85 ? rand() * 5 + 2 : 0;
           if (glow > 0) {
             ctx.shadowColor = `rgba(${color},0.9)`;
             ctx.shadowBlur = glow;
@@ -75,29 +77,29 @@ export function ParticleField({ colors, count }: ParticleFieldProps) {
           ctx.arc(x, y, size, 0, Math.PI * 2);
           ctx.fill();
         } else if (kind === "blob") {
-          const size = rand() * 60 + 30;
+          const size = rand() * 14 + 8;
           const grad = ctx.createRadialGradient(x, y, 0, x, y, size);
-          grad.addColorStop(0, `rgba(${color},${alpha * 0.5})`);
+          grad.addColorStop(0, `rgba(${color},${alpha * 0.3})`);
           grad.addColorStop(1, `rgba(${color},0)`);
           ctx.fillStyle = grad;
           ctx.beginPath();
           ctx.arc(x, y, size, 0, Math.PI * 2);
           ctx.fill();
         } else if (kind === "streak") {
-          const len = rand() * 40 + 15;
+          const len = rand() * 20 + 8;
           const angle = rand() * Math.PI * 2;
           ctx.strokeStyle = `rgba(${color},${alpha})`;
-          ctx.lineWidth = rand() * 1.5 + 0.5;
-          ctx.shadowColor = `rgba(${color},0.8)`;
-          ctx.shadowBlur = 6;
+          ctx.lineWidth = rand() * 1.2 + 0.4;
+          ctx.shadowColor = `rgba(${color},0.7)`;
+          ctx.shadowBlur = 4;
           ctx.beginPath();
           ctx.moveTo(x, y);
           ctx.lineTo(x + Math.cos(angle) * len, y + Math.sin(angle) * len);
           ctx.stroke();
         } else if (kind === "ring") {
-          const size = rand() * 12 + 4;
+          const size = rand() * 8 + 3;
           ctx.strokeStyle = `rgba(${color},${alpha})`;
-          ctx.lineWidth = 1.2;
+          ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.arc(x, y, size, 0, Math.PI * 2);
           ctx.stroke();
