@@ -201,8 +201,8 @@ button {
 }
 
 .digit-box-inner {
-  width: 92%;
-  height: 74%;
+  width: 94%;
+  height: 82%;
   border-radius: 14px;
   background: #000000;
   display: flex;
@@ -212,7 +212,7 @@ button {
 
 .digit-box-value {
   font-variant-numeric: tabular-nums;
-  font-size: clamp(48px, 15vw, 92px);
+  font-size: clamp(58px, 18vw, 110px);
   font-weight: 800;
   line-height: 1;
   color: rgb(var(--box-color));
